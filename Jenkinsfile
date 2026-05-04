@@ -34,7 +34,7 @@ pipeline {
                 sh '''
                     kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
                     kubectl apply -f deployment.yaml -n ${NAMESPACE}
-                    kubectl apply -f service.yaml -N ${NAMESPACE}
+                    kubectl apply -f service.yaml -n ${NAMESPACE}
                     kubectl rollout status deployment/payment-app -n ${NAMESPACE} --timeout=60s
                 '''
             }
