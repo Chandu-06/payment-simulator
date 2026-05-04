@@ -33,11 +33,9 @@ pipeline {
             steps {
                 sh '''
                     kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
-                    eval $(minikube docker-env)
-                    docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                    kubectl apply -f deployment.yaml
-                    kubectl apply -f service.yaml
-                    kubectl rollout status deployment/payment-app -n ${NAMESPACE}
+                    kubectl apply -f deployment.yaml -n ${NAMESPACE}
+                    kubectl apply -f service.yaml -N ${NAMESPACE}
+                    kubectl rollout status deployment/payment-app -n ${NAMESPACE} --timeout=60s
                 '''
             }
         }
