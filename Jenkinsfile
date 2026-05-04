@@ -20,7 +20,8 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                    docker run -d --name test-container ${IMAGE_NAME}:${IMAGE_TAG}
+		    docker rm -f test-container || true
+                    docker run -d --name test-container payment-simulator:latest
                     sleep 3
                     docker exec test-container curl -f http://localhost:8000/health
                     docker stop test-container
